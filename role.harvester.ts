@@ -1,4 +1,4 @@
-export const harvesterRun = async (room: Room) => {
+export const harvesterRun = (room: Room) => {
   const myHarvesters = room.find(FIND_MY_CREEPS).filter(creep => creep.name.startsWith('Harvester'));
 
   const spawn = room.find(FIND_MY_SPAWNS).reduce((highestEnergySpawn, spawn) => (

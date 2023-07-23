@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.harvesterRun = void 0;
-const harvesterRun = async (room) => {
+const harvesterRun = (room) => {
     const myHarvesters = room.find(FIND_MY_CREEPS).filter(creep => creep.name.startsWith('Harvester'));
     const spawn = room.find(FIND_MY_SPAWNS).reduce((highestEnergySpawn, spawn) => (spawn.store[RESOURCE_ENERGY] > highestEnergySpawn.store[RESOURCE_ENERGY] ? spawn : highestEnergySpawn));
     if (myHarvesters.length === 0) {

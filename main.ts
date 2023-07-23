@@ -1,9 +1,8 @@
 import { harvesterRun } from './role.harvester';
 
-export const loop = async () => {
-  await Object.keys(Game.rooms).reduce(async (promise, roomName) => {
-    await promise;
+export const loop = () => {
+  for (const roomName in Game.rooms) {
     const room = Game.rooms[roomName];
-    await harvesterRun(room);
-  }, Promise.resolve());
+    harvesterRun(room);
+  }
 };
