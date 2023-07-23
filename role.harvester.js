@@ -21,14 +21,22 @@ const harvesterRun = (room) => {
         if (myHarvester.store[RESOURCE_ENERGY] < myHarvester.store.getCapacity(RESOURCE_ENERGY)) {
             const source = room.find(FIND_SOURCES).reduce((closestSource, source) => {
                 const upTiles = room.lookAt(source.pos.x, source.pos.y - 1);
-                const rightTiles = room.lookAt(source.pos.x + 1, source.pos.y + 1);
+                const upRightTiles = room.lookAt(source.pos.x + 1, source.pos.y - 1);
+                const rightTiles = room.lookAt(source.pos.x + 1, source.pos.y);
+                const downRightTiles = room.lookAt(source.pos.x + 1, source.pos.y + 1);
                 const downTiles = room.lookAt(source.pos.x, source.pos.y + 1);
+                const downLeftTiles = room.lookAt(source.pos.x - 1, source.pos.y + 1);
                 const leftTiles = room.lookAt(source.pos.x - 1, source.pos.y);
+                const upLeftTiles = room.lookAt(source.pos.x - 1, source.pos.y - 1);
                 if (myHarvester.pos.getRangeTo(source) < myHarvester.pos.getRangeTo(closestSource) &&
                     (upTiles.length === 1 && upTiles[0].terrain !== 'wall' ||
+                        upRightTiles.length === 1 && upRightTiles[0].terrain !== 'wall' ||
                         rightTiles.length === 1 && rightTiles[0].terrain !== 'wall' ||
+                        downRightTiles.length === 1 && downRightTiles[0].terrain !== 'wall' ||
                         downTiles.length === 1 && downTiles[0].terrain !== 'wall' ||
-                        leftTiles.length === 1 && leftTiles[0].terrain !== 'wall')) {
+                        downLeftTiles.length === 1 && downLeftTiles[0].terrain !== 'wall' ||
+                        leftTiles.length === 1 && leftTiles[0].terrain !== 'wall' ||
+                        upLeftTiles.length === 1 && upLeftTiles[0].terrain !== 'wall')) {
                     return source;
                 }
                 return closestSource;
