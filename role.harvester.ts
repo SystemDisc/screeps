@@ -36,7 +36,8 @@ export const harvesterRun = (room: Room) => {
           (downTiles.length === 1 && downTiles[0].terrain !== 'wall') ||
           (downLeftTiles.length === 1 && downLeftTiles[0].terrain !== 'wall') ||
           (leftTiles.length === 1 && leftTiles[0].terrain !== 'wall') ||
-          (upLeftTiles.length === 1 && upLeftTiles[0].terrain !== 'wall')
+          (upLeftTiles.length === 1 && upLeftTiles[0].terrain !== 'wall') ||
+          myHarvester.pos.getRangeTo(source) === 1
         );
         const closestUpTiles = room.lookAt(closestSource.pos.x, closestSource.pos.y - 1);
         const closestUpRightTiles = room.lookAt(closestSource.pos.x + 1, closestSource.pos.y - 1);
@@ -54,7 +55,8 @@ export const harvesterRun = (room: Room) => {
           (closestDownTiles.length === 1 && closestDownTiles[0].terrain !== 'wall') ||
           (closestDownLeftTiles.length === 1 && closestDownLeftTiles[0].terrain !== 'wall') ||
           (closestLeftTiles.length === 1 && closestLeftTiles[0].terrain !== 'wall') ||
-          (closestUpLeftTiles.length === 1 && closestUpLeftTiles[0].terrain !== 'wall')
+          (closestUpLeftTiles.length === 1 && closestUpLeftTiles[0].terrain !== 'wall') ||
+          myHarvester.pos.getRangeTo(closestSource) === 1
         );
         if (
           (myHarvester.pos.getRangeTo(source) < myHarvester.pos.getRangeTo(closestSource) && sourceAvailable && closestSourceAvailable) ||
