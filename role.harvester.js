@@ -21,7 +21,7 @@ const harvesterRun = (room) => {
             spawn.spawnCreep([WORK, CARRY, CARRY, MOVE, MOVE], 'Harvester1');
         }
     }
-    else if (myHarvesters.length < 4) {
+    else if (myHarvesters.length < 10) {
         if (spawn.store[RESOURCE_ENERGY] >= 300) {
             spawn.spawnCreep([WORK, CARRY, CARRY, MOVE, MOVE], `Harvester${myHarvesters.length + 1}`);
         }
@@ -84,7 +84,11 @@ const harvesterRun = (room) => {
         }
         else {
             const spawn = findClosestSpawnForTransfer(myHarvester);
-            if (spawn && myHarvester.transfer(spawn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+            const constructionSites = room.find(FIND_MY_CONSTRUCTION_SITES);
+            if (constructionSites[0] && myHarvester.build(constructionSites[0]) === ERR_NOT_IN_RANGE) {
+                myHarvester.moveTo(constructionSites[0]);
+            }
+            else if (spawn && myHarvester.transfer(spawn, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                 myHarvester.moveTo(spawn);
             }
             else if (room.controller) {
