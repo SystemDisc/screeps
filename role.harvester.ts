@@ -39,13 +39,13 @@ export const harvesterRun = (room: Room) => {
       });
       if (myHarvester.harvest(source) === ERR_NOT_IN_RANGE) {
         myHarvester.moveTo(source);
-      } else {
-        const spawn = room.find(FIND_MY_SPAWNS).reduce((closestSpawn, spawn) => (
-          myHarvester.pos.getRangeTo(spawn) < myHarvester.pos.getRangeTo(closestSpawn) ? spawn : closestSpawn
-        ));
-        if (myHarvester.transfer(spawn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-          myHarvester.moveTo(spawn);
-        }
+      }
+    } else {
+      const spawn = room.find(FIND_MY_SPAWNS).reduce((closestSpawn, spawn) => (
+        myHarvester.pos.getRangeTo(spawn) < myHarvester.pos.getRangeTo(closestSpawn) ? spawn : closestSpawn
+      ));
+      if (myHarvester.transfer(spawn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+        myHarvester.moveTo(spawn);
       }
     }
   }
