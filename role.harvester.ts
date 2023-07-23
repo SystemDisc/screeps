@@ -28,18 +28,37 @@ export const harvesterRun = (room: Room) => {
         const downLeftTiles = room.lookAt(source.pos.x - 1, source.pos.y + 1);
         const leftTiles = room.lookAt(source.pos.x - 1, source.pos.y);
         const upLeftTiles = room.lookAt(source.pos.x - 1, source.pos.y - 1);
+        const sourceAvailable = (
+          upTiles.length === 1 && upTiles[0].terrain !== 'wall' ||
+          upRightTiles.length === 1 && upRightTiles[0].terrain !== 'wall' ||
+          rightTiles.length === 1 && rightTiles[0].terrain !== 'wall' ||
+          downRightTiles.length === 1 && downRightTiles[0].terrain !== 'wall' ||
+          downTiles.length === 1 && downTiles[0].terrain !== 'wall' ||
+          downLeftTiles.length === 1 && downLeftTiles[0].terrain !== 'wall' ||
+          leftTiles.length === 1 && leftTiles[0].terrain !== 'wall' ||
+          upLeftTiles.length === 1 && upLeftTiles[0].terrain !== 'wall'
+        );
+        const closestUpTiles = room.lookAt(source.pos.x, source.pos.y - 1);
+        const closestUpRightTiles = room.lookAt(source.pos.x + 1, source.pos.y - 1);
+        const closestRightTiles = room.lookAt(source.pos.x + 1, source.pos.y);
+        const closestDownRightTiles = room.lookAt(source.pos.x + 1, source.pos.y + 1);
+        const closestDownTiles = room.lookAt(source.pos.x, source.pos.y + 1);
+        const closestDownLeftTiles = room.lookAt(source.pos.x - 1, source.pos.y + 1);
+        const closestLeftTiles = room.lookAt(source.pos.x - 1, source.pos.y);
+        const closestUpLeftTiles = room.lookAt(source.pos.x - 1, source.pos.y - 1);
+        const closestSourceAvailable = (
+          closestUpTiles.length === 1 && closestUpTiles[0].terrain !== 'wall' ||
+          closestUpRightTiles.length === 1 && closestUpRightTiles[0].terrain !== 'wall' ||
+          closestRightTiles.length === 1 && closestRightTiles[0].terrain !== 'wall' ||
+          closestDownRightTiles.length === 1 && closestDownRightTiles[0].terrain !== 'wall' ||
+          closestDownTiles.length === 1 && closestDownTiles[0].terrain !== 'wall' ||
+          closestDownLeftTiles.length === 1 && closestDownLeftTiles[0].terrain !== 'wall' ||
+          closestLeftTiles.length === 1 && closestLeftTiles[0].terrain !== 'wall' ||
+          closestUpLeftTiles.length === 1 && closestUpLeftTiles[0].terrain !== 'wall'
+        );
         if (
-          myHarvester.pos.getRangeTo(source) < myHarvester.pos.getRangeTo(closestSource) &&
-          (
-            upTiles.length === 1 && upTiles[0].terrain !== 'wall' ||
-            upRightTiles.length === 1 && upRightTiles[0].terrain !== 'wall' ||
-            rightTiles.length === 1 && rightTiles[0].terrain !== 'wall' ||
-            downRightTiles.length === 1 && downRightTiles[0].terrain !== 'wall' ||
-            downTiles.length === 1 && downTiles[0].terrain !== 'wall' ||
-            downLeftTiles.length === 1 && downLeftTiles[0].terrain !== 'wall' ||
-            leftTiles.length === 1 && leftTiles[0].terrain !== 'wall' ||
-            upLeftTiles.length === 1 && upLeftTiles[0].terrain !== 'wall'
-          )
+          (myHarvester.pos.getRangeTo(source) < myHarvester.pos.getRangeTo(closestSource) && sourceAvailable && closestSourceAvailable) ||
+          sourceAvailable && !closestSourceAvailable
         ) {
           return source;
         }
