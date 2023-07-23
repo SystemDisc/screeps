@@ -33,6 +33,12 @@ const harvesterRun = (room) => {
                 }
                 return closestSource;
             });
+            const spawn = room.find(FIND_MY_SPAWNS).reduce((closestSpawn, spawn) => (myHarvester.pos.getRangeTo(spawn) < myHarvester.pos.getRangeTo(closestSpawn) ? spawn : closestSpawn));
+            if (myHarvester.pos.getRangeTo(spawn) < myHarvester.pos.getRangeTo(source)) {
+                if (myHarvester.transfer(spawn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    myHarvester.moveTo(spawn);
+                }
+            }
             if (myHarvester.harvest(source) === ERR_NOT_IN_RANGE) {
                 myHarvester.moveTo(source);
             }
