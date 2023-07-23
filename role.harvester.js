@@ -1,6 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.harvesterRun = void 0;
+const returnEnergy = (myHarvester, spawn) => {
+    if (myHarvester.transfer(spawn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+        myHarvester.moveTo(spawn);
+    }
+};
+const findClosestSpawnForTransfer = (myHarvester) => {
+    return myHarvester.room.find(FIND_MY_SPAWNS).reduce((closestSpawn, spawn) => (((closestSpawn && myHarvester.pos.getRangeTo(spawn) < myHarvester.pos.getRangeTo(closestSpawn)) || (!closestSpawn)) &&
+        spawn.store[RESOURCE_ENERGY] < spawn.store.getCapacity(RESOURCE_ENERGY) ? spawn : closestSpawn), null);
+};
 const harvesterRun = (room) => {
     const myHarvesters = room.find(FIND_MY_CREEPS).filter(creep => creep.name.startsWith('Harvester'));
     const spawn = room.find(FIND_MY_SPAWNS).reduce((highestEnergySpawn, spawn) => (spawn.store[RESOURCE_ENERGY] > highestEnergySpawn.store[RESOURCE_ENERGY] ? spawn : highestEnergySpawn));
@@ -60,20 +69,28 @@ const harvesterRun = (room) => {
                 }
                 return closestSource;
             });
-            const spawn = room.find(FIND_MY_SPAWNS).reduce((closestSpawn, spawn) => (myHarvester.pos.getRangeTo(spawn) < myHarvester.pos.getRangeTo(closestSpawn) ? spawn : closestSpawn));
-            if (myHarvester.pos.getRangeTo(spawn) < myHarvester.pos.getRangeTo(source)) {
-                if (myHarvester.transfer(spawn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    myHarvester.moveTo(spawn);
+            const spawn = findClosestSpawnForTransfer(myHarvester);
+            if (myHarvester.store[RESOURCE_ENERGY] > 0 && spawn && myHarvester.pos.getRangeTo(spawn) < myHarvester.pos.getRangeTo(source)) {
+                returnEnergy(myHarvester, spawn);
+            }
+            else if (myHarvester.store[RESOURCE_ENERGY] > 0 && room.controller && myHarvester.pos.getRangeTo(room.controller) < myHarvester.pos.getRangeTo(source)) {
+                if (myHarvester.upgradeController(room.controller) === ERR_NOT_IN_RANGE) {
+                    myHarvester.moveTo(room.controller);
                 }
             }
-            if (myHarvester.harvest(source) === ERR_NOT_IN_RANGE) {
+            else if (myHarvester.harvest(source) === ERR_NOT_IN_RANGE) {
                 myHarvester.moveTo(source);
             }
         }
         else {
-            const spawn = room.find(FIND_MY_SPAWNS).reduce((closestSpawn, spawn) => (myHarvester.pos.getRangeTo(spawn) < myHarvester.pos.getRangeTo(closestSpawn) ? spawn : closestSpawn));
-            if (myHarvester.transfer(spawn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+            const spawn = findClosestSpawnForTransfer(myHarvester);
+            if (spawn && myHarvester.transfer(spawn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 myHarvester.moveTo(spawn);
+            }
+            else if (room.controller) {
+                if (myHarvester.upgradeController(room.controller) === ERR_NOT_IN_RANGE) {
+                    myHarvester.moveTo(room.controller);
+                }
             }
         }
     }
