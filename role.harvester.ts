@@ -11,7 +11,7 @@ export const harvesterRun = (room: Room) => {
     } else {
       spawn.spawnCreep([WORK, CARRY, CARRY, MOVE, MOVE], 'Harvester1');
     }
-  } else if (myHarvesters.length < 10) {
+  } else if (myHarvesters.length < 4) {
     if (spawn.store[RESOURCE_ENERGY] >= 300) {
       spawn.spawnCreep([WORK, CARRY, CARRY, MOVE, MOVE], `Harvester${myHarvesters.length + 1}`);
     }
