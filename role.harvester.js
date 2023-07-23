@@ -1,16 +1,7 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.harvesterRun = void 0;
-const harvesterRun = (room) => __awaiter(void 0, void 0, void 0, function* () {
+const harvesterRun = async (room) => {
     const myCreeps = room.find(FIND_MY_CREEPS);
     const harvesterCount = myCreeps.reduce((sum, creep) => {
         return creep.memory.harvester ? sum + 1 : sum;
@@ -26,5 +17,5 @@ const harvesterRun = (room) => __awaiter(void 0, void 0, void 0, function* () {
     }
     else {
     }
-});
+};
 exports.harvesterRun = harvesterRun;
