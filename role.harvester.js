@@ -70,7 +70,13 @@ const harvesterRun = (room) => {
                 return closestSource;
             });
             const spawn = findClosestSpawnForTransfer(myHarvester);
-            if (myHarvester.store[RESOURCE_ENERGY] > 0 && spawn && myHarvester.pos.getRangeTo(spawn) < myHarvester.pos.getRangeTo(source)) {
+            const constructionSites = room.find(FIND_MY_CONSTRUCTION_SITES);
+            if (myHarvester.store[RESOURCE_ENERGY] > 0 && constructionSites[0] && myHarvester.pos.getRangeTo(constructionSites[0]) < myHarvester.pos.getRangeTo(source)) {
+                if (myHarvester.build(constructionSites[0]) === ERR_NOT_IN_RANGE) {
+                    myHarvester.moveTo(constructionSites[0]);
+                }
+            }
+            else if (myHarvester.store[RESOURCE_ENERGY] > 0 && spawn && myHarvester.pos.getRangeTo(spawn) < myHarvester.pos.getRangeTo(source)) {
                 returnEnergy(myHarvester, spawn);
             }
             else if (myHarvester.store[RESOURCE_ENERGY] > 0 && room.controller && myHarvester.pos.getRangeTo(room.controller) < myHarvester.pos.getRangeTo(source)) {
