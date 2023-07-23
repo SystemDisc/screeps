@@ -19,9 +19,24 @@ export const harvesterRun = (room: Room) => {
 
   for (const myHarvester of myHarvesters) {
     if (myHarvester.store[RESOURCE_ENERGY] < myHarvester.store.getCapacity(RESOURCE_ENERGY)) {
-      const source = room.find(FIND_SOURCES).reduce((closestSpawn, source) => (
-        myHarvester.pos.getRangeTo(source) < myHarvester.pos.getRangeTo(closestSpawn) ? source : closestSpawn
-      ));
+      const source = room.find(FIND_SOURCES).reduce((closestSource, source) => {
+        const upTiles = room.lookAt(source.pos.x, source.pos.y - 1);
+        const rightTiles = room.lookAt(source.pos.x + 1, source.pos.y + 1);
+        const downTiles = room.lookAt(source.pos.x, source.pos.y + 1);
+        const leftTiles = room.lookAt(source.pos.x - 1, source.pos.y);
+        if (
+          myHarvester.pos.getRangeTo(source) < myHarvester.pos.getRangeTo(closestSource) &&
+          (
+            upTiles.length === 1 && upTiles[0].terrain !== 'wall' ||
+            rightTiles.length === 1 && rightTiles[0].terrain !== 'wall' ||
+            downTiles.length === 1 && downTiles[0].terrain !== 'wall' ||
+            leftTiles.length === 1 && leftTiles[0].terrain !== 'wall'
+          )
+        ) {
+          return source;
+        }
+        return closestSource;
+      });
       if (myHarvester.harvest(source) === ERR_NOT_IN_RANGE) {
         myHarvester.moveTo(source);
       } else {
