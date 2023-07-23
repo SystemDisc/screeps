@@ -36,14 +36,14 @@ const harvesterRun = (room) => {
                     (downLeftTiles.length === 1 && downLeftTiles[0].terrain !== 'wall') ||
                     (leftTiles.length === 1 && leftTiles[0].terrain !== 'wall') ||
                     (upLeftTiles.length === 1 && upLeftTiles[0].terrain !== 'wall'));
-                const closestUpTiles = room.lookAt(source.pos.x, source.pos.y - 1);
-                const closestUpRightTiles = room.lookAt(source.pos.x + 1, source.pos.y - 1);
-                const closestRightTiles = room.lookAt(source.pos.x + 1, source.pos.y);
-                const closestDownRightTiles = room.lookAt(source.pos.x + 1, source.pos.y + 1);
-                const closestDownTiles = room.lookAt(source.pos.x, source.pos.y + 1);
-                const closestDownLeftTiles = room.lookAt(source.pos.x - 1, source.pos.y + 1);
-                const closestLeftTiles = room.lookAt(source.pos.x - 1, source.pos.y);
-                const closestUpLeftTiles = room.lookAt(source.pos.x - 1, source.pos.y - 1);
+                const closestUpTiles = room.lookAt(closestSource.pos.x, closestSource.pos.y - 1);
+                const closestUpRightTiles = room.lookAt(closestSource.pos.x + 1, closestSource.pos.y - 1);
+                const closestRightTiles = room.lookAt(closestSource.pos.x + 1, closestSource.pos.y);
+                const closestDownRightTiles = room.lookAt(closestSource.pos.x + 1, closestSource.pos.y + 1);
+                const closestDownTiles = room.lookAt(closestSource.pos.x, closestSource.pos.y + 1);
+                const closestDownLeftTiles = room.lookAt(closestSource.pos.x - 1, closestSource.pos.y + 1);
+                const closestLeftTiles = room.lookAt(closestSource.pos.x - 1, closestSource.pos.y);
+                const closestUpLeftTiles = room.lookAt(closestSource.pos.x - 1, closestSource.pos.y - 1);
                 const closestSourceAvailable = ((closestUpTiles.length === 1 && closestUpTiles[0].terrain !== 'wall') ||
                     (closestUpRightTiles.length === 1 && closestUpRightTiles[0].terrain !== 'wall') ||
                     (closestRightTiles.length === 1 && closestRightTiles[0].terrain !== 'wall') ||
